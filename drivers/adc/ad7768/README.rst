@@ -159,73 +159,72 @@ or a negative error code if an error occurs.
 Driver Initialization Example
 -----------------------------
 
-    .. code-block::C
+ .. code-block:: C
 
-        #include <xparameters.h>
-        #include "ad7768.h"
-        #include "xilinx_spi.h"
-        #include "xilinx_gpio.h"
-        #include "no_os_gpio.h"
-        #include "no_os_spi.h"
+   #include <xparameters.h>
+   #include "ad7768.h"
+   #include "xilinx_spi.h"
+   #include "xilinx_gpio.h"
+   #include "no_os_gpio.h"
+   #include "no_os_spi.h"
 
-        // Initializing the AD7768 device
-        ad7768_init_param default_init_param = {
-            .spi_init = {
-                .device_id = SPI_DEVICE_ID,
-                .max_speed_hz = 1000000,
-                .chip_select = SPI_AD7768_CS,
-                .mode = NO_OS_SPI_MODE_0,
-                .platform_ops = &xil_spi_ops,
-                .extra = NULL
-            },
-            .gpio_reset = {
-                .number = GPIO_RESET_N,
-                .platform_ops = &xil_gpio_ops,
-                .extra = NULL
-            },
-            .gpio_reset_value = NO_OS_GPIO_HIGH,
-            .mclk = 32768000,
-            .datalines = 8
-        };
+   // Initializing the AD7768 device
+   ad7768_init_param default_init_param = {
+       .spi_init = {
+           .device_id = SPI_DEVICE_ID,
+           .max_speed_hz = 1000000,
+           .chip_select = SPI_AD7768_CS,
+           .mode = NO_OS_SPI_MODE_0,
+           .platform_ops = &xil_spi_ops,
+           .extra = NULL
+       },
+       .gpio_reset = {
+           .number = GPIO_RESET_N,
+           .platform_ops = &xil_gpio_ops,
+           .extra = NULL
+       },
+       .gpio_reset_value = NO_OS_GPIO_HIGH,
+       .mclk = 32768000,
+       .datalines = 8
+   };
 
-        ad7768_dev *dev;
-        int ret;
+   ad7768_dev *dev;
+   int ret;
 
-        // Begin AD7768 device setup
-        ret = ad7768_setup_begin(&dev, default_init_param);
-        if (ret) {
-            printf("AD7768 setup begin failed\n");
-            return ret;
-        }
-
-        // Reset AD7768 to ensure clean startup
-        ret = no_os_gpio_set_value(dev->gpio_reset, NO_OS_GPIO_LOW);
-        if (ret) return ret;
-        no_os_udelay(100);
-        ret = no_os_gpio_set_value(dev->gpio_reset, NO_OS_GPIO_HIGH);
-        if (ret) return ret;
-        no_os_udelay(1660);
-
-        // Read and check the device revision ID
-        uint8_t reg_data;
-        ret = ad7768_spi_read(dev, AD7768_REG_REV_ID, &reg_data);
-        if (ret || reg_data != 0x06) {
-            printf("Device ID error: %#x\n", reg_data);
-            return -1;
-        }
-
-        printf("AD7768 Rev ID %#x.\n", reg_data);
-
-        // Finish the AD7768 device initialization
-        ret = ad7768_setup_finish(dev, default_init_param);
-        if (ret) {
-            printf("AD7768 setup finish failed\n");
-            return ret;
-        }
-
-        // Setup complete
-        return 0;
+   // Begin AD7768 device setup
+   ret = ad7768_setup_begin(&dev, default_init_param);
+   if (ret) {
+       printf("AD7768 setup begin failed\n");
+       return ret;
    }
+
+   // Reset AD7768 to ensure clean startup
+   ret = no_os_gpio_set_value(dev->gpio_reset, NO_OS_GPIO_LOW);
+   if (ret) return ret;
+   no_os_udelay(100);
+   ret = no_os_gpio_set_value(dev->gpio_reset, NO_OS_GPIO_HIGH);
+   if (ret) return ret;
+   no_os_udelay(1660);
+
+   // Read and check the device revision ID
+   uint8_t reg_data;
+   ret = ad7768_spi_read(dev, AD7768_REG_REV_ID, &reg_data);
+   if (ret || reg_data != 0x06) {
+       printf("Device ID error: %#x\n", reg_data);
+       return -1;
+   }
+
+   printf("AD7768 Rev ID %#x.\n", reg_data);
+
+   // Finish the AD7768 device initialization
+   ret = ad7768_setup_finish(dev, default_init_param);
+   if (ret) {
+       printf("AD7768 setup finish failed\n");
+       return ret;
+   }
+
+   // Setup complete
+   return 0;
 
 Data Transfer
 -------------
