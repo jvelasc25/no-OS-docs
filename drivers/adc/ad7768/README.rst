@@ -147,13 +147,7 @@ structure, allowing verification and confirmation of the CRC
 configuration in use. Both functions return 0 on successful execution,
 or a negative error code if an error occurs.
 
-.. Note::
-
-     When configuring the AD7768 device, verify that all
-     configuration values are consistent with the specific platform or
-     hardware in use, especially regarding clock speeds, power modes, and SPI
-     settings. Accurate device-specific configurations are crucial to avoid
-     performance or compatibility issues.
+.. Note:: When configuring the AD7768 device, verify that all configuration values are consistent with the specific platform or hardware in use, especially regarding clock speeds, power modes, and SPI settings. Accurate device-specific configurations are crucial to avoid performance or compatibility issues.
 
 
 Driver Initialization Example
@@ -229,9 +223,9 @@ Driver Initialization Example
 Data Transfer
 -------------
 
-.. mermaid:: 
+```mermaid
    
-    sequenceDiagram
+     sequenceDiagram
         participant Host
         participant Device
         Host->Device: Initialize AD7768
@@ -243,7 +237,8 @@ Data Transfer
             Device-->Host: Send CRC
         end
         Host->Device: Finalize Transfer
-  
+```
+
 This sequence diagram outlines the data transfer process between the
 host and the AD7768 device. The interaction begins with initialization,
 including resetting the AD7768 and checking its revision ID. It then
