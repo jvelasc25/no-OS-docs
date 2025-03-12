@@ -229,21 +229,21 @@ Driver Initialization Example
 Data Transfer
 -------------
 
-```mermaid
-sequenceDiagram
-    participant Host
-    participant Device
-    Host->>Device: Initialize AD7768
-    Device-->>Host: Device Ready
-    Host->>Device: Start Conversion
-    Device-->>Host: Conversion Data
-    alt CRC Enabled
-        Host->>Device: Request CRC
-        Device-->>Host: Send CRC
-    end
-    Host->>Device: Finalize Transfer
-```
+.. mermaid:: 
    
+    sequenceDiagram
+        participant Host
+        participant Device
+        Host->>Device: Initialize AD7768
+        Device-->>Host: Device Ready
+        Host->>Device: Start Conversion
+        Device-->>Host: Conversion Data
+        alt CRC Enabled
+            Host->>Device: Request CRC
+            Device-->>Host: Send CRC
+        end
+        Host->>Device: Finalize Transfer
+  
 This sequence diagram outlines the data transfer process between the
 host and the AD7768 device. The interaction begins with initialization,
 including resetting the AD7768 and checking its revision ID. It then
